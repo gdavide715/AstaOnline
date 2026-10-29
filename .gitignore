@@ -1,31 +1,35 @@
-# Node modules
-/node_modules
+# Node modules (in qualsiasi sottocartella)
+**/node_modules/
 
 # Compilation output
-/dist
+**/dist/
 
 # pnpm deploy output
-/bundle
+**/bundle/
 
 # Hardhat Build Artifacts
-/artifacts
+**/artifacts/
 
 # Hardhat compilation (v2) support directory
-/cache
+**/cache/
 
 # Typechain output
-/types
+**/types/
+**/typechain-types/
+
+# Next.js build output
+**/.next/
 
 # Environment files
-.env
-.env.*
-!.env.example
+**/.env
+**/.env.*
+!**/.env.example
 
 # Hardhat coverage reports
-/coverage
+**/coverage/
 
 # Gas snapshot files
-/.gas-snapshot
+**/.gas-snapshot
 
 # Snapshot cheatcodes output
-/snapshots
+**/snapshots/
