@@ -134,4 +134,22 @@ contract AuctionTest is Test {
         assertEq(uint8(auction.state()), uint8(Auction.State.Ended));
         assertEq(auction.pendingReturns(alice), 1 ether); // Alice deve essere rimborsata
     }
+
+    function test_RevertWhen_BidAfterCancel() public {
+        vm.prank(owner);
+        auction.cancelAuction();
+
+        vm.prank(alice);
+        vm.expectRevert("Invalid state");
+        auction.bid{value: 1 ether}();
+    }
+
+    function test_RevertWhen_EndAlreadyEnded() public {
+        vm.warp(block.timestamp + 1 days);
+        auction.end();
+
+        vm.expectRevert("Invalid state");
+        auction.end();
+    }
+
 }
