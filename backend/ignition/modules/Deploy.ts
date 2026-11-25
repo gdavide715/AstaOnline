@@ -1,21 +1,26 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+import { parseEther } from "viem";
 
-const AuctionModule = buildModule("AuctionModule", (m) => {
-  // Parametri di esempio passati al costruttore del contratto Auction:
-  // owner, seller, item, startingPrice, minIncrement, duration
-  const owner = m.getAccount(0);
+const AuctionFactoryModule = buildModule("AuctionFactoryModule", (m) => {
   const seller = m.getAccount(1);
 
-  const auction = m.contract("Auction", [
-    owner,
-    seller,
-    "Quadro",
-    1000000000000000000n, // 1 ETH in wei
-    100000000000000000n,  // 0.1 ETH in wei
-    86400n                // 1 giorno in secondi
-  ]);
+  // 1. Deploy della Factory (m.getAccount(0) diventa automaticamente owner/admin)
+  const factory = m.contract("AuctionFactory");
 
-  return { auction };
+  // 2. Creazione di un'asta iniziale di esempio tramite il venditore
+  m.call(
+    factory,
+    "createAuction",
+    [
+      "Quadro",
+      parseEther("1"),   // startingPrice: 1 ETH
+      parseEther("0.1"), // minIncrement: 0.1 ETH
+      86400n             // duration: 1 giorno (86400 secondi)
+    ],
+    { from: seller }
+  );
+
+  return { factory };
 });
 
-export default AuctionModule;
+export default AuctionFactoryModule;
